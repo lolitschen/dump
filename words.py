@@ -69,6 +69,7 @@ def results(docs, terms):
     HTML += "<h2>Search results for {} in {} files</h2>".format(" ".join(terms), length)
     for doc in docs:
         HTML += "<p><a href='file://{}'>{}</a><br/></p>".format(doc, doc)
+        
     HTML+= """
     </body>
     </html>

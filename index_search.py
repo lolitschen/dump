@@ -12,6 +12,19 @@ def create_index(files):
     For each word w in file i, add i to the set of document IDs containing w
     Return a dict object mapping a word to a set of doc IDs.
     """
+    index = {}
+
+    for idx, f in enumerate(files):
+        txt = get_text(f)
+        txt = words(txt)
+
+        for word in txt:
+            try:
+                index[word].append(f)
+            except:
+                index[word] = [f]
+
+    return index
 
 
 def index_search(files, index, terms):
