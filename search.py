@@ -50,4 +50,6 @@ while True:
     f = open("/tmp/results.html", "w")
     f.write(page)
     f.close()
-    webbrowser.open_new_tab("file:///tmp/results.html")
+
+    browser=webbrowser.get("Safari")
+    browser.open_new_tab("file:///tmp/results.html")

@@ -6,8 +6,8 @@ import jinja2 as j
 
 def filelist(root):
     """Return a fully-qualified list of filenames under root directory"""
-    files = [os.join(root, f) for f in os.listdir(root) if os.isfile(os.join(root, f))]
-    return files
+    result = [os.path.join(dp, f) for dp, dn, filenames in os.walk(root) for f in filenames if os.path.splitext(f)[1] == '.txt']
+    return result
 
 def get_text(fileName):
     f = open(fileName)
@@ -46,20 +46,34 @@ def results(docs, terms):
     docs = docs[:100]
 
 
-#{% for t in terms %}{% if loop.last %}{{t}}{{% else %}}{{t}},{% endif %}{% endfor %}
+    #{% for t in terms %}{% if loop.last %}{{t}}{{% else %}}{{t}},{% endif %}{% endfor %}
+
+
+    # HTML = """<html>
+    # <body>
+    # <h2>Search results for <b> {{ terms|join(', ) }}</b> in {{length}} files</h2>
+    #
+    # {% for d in docs %}<p><a href="file://{{d}}">{{d}}</a><br>
+    # {{something}}<br><br>{% endfor %}
+    #
+    # </body>
+    # </html>
+    # """
+    # return j.Environment().from_string(HTML).render(docs = docs, terms = terms, length = length)
 
 
     HTML = """<html>
     <body>
-    <h2>Search results for <b> {{ terms|join(', ) }}</b> in {{length}} files</h2>
-    
-    {% for d in docs %}<p><a href="file://{{d}}">{{d}}</a><br>
-    {{something}}<br><br>{% endfor %}
-    
+    """
+
+    HTML += "<h2>Search results for {} in {} files</h2>".format(" ".join(terms), length)
+    for doc in docs:
+        HTML += "<p><a href='file://{}'>{}</a><br/></p>".format(doc, doc)
+    HTML+= """
     </body>
     </html>
     """
-    return j.Environment().from_string(HTML).render(docs = docs, terms = terms, length = length)
+    return HTML
 
 
 def filenames(docs):
