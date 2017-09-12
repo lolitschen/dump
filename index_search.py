@@ -20,10 +20,13 @@ def create_index(files):
 
         for word in txt:
             try:
+                #im appending the file location as the ID..
+                # can also use idx to preserve order
                 index[word].append(f)
             except:
+                #im appending the file location as the ID..
+                # can also use idx to preserve order
                 index[word] = [f]
-
     return index
 
 
@@ -35,3 +38,8 @@ def index_search(files, index, terms):
     You can only use the index to find matching files; you cannot open the files
     and look inside.
     """
+    # if you're using idx as the document ID this should look like
+    # files = [files[index[word]] for word in terms]
+    files = [index[word] for word in terms]
+    intersect = set(files[0]).intersection(*files)
+    return list(intersect)
